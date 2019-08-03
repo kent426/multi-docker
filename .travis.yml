@@ -1,0 +1,20 @@
+sudo: required
+services:
+  - docker
+
+before_install:
+  - docker build -t kent/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true kent/react-test npm test
+
+after_success:
+  - docker run build -t kent/multi-client ./client
+  - docker run build -t kent/multi-nginx ./nginx
+  - docker run build -t kent/multi-server ./server
+  - docker run build -t kent/multi-worker ./worker
+  - echo "DOCKER_PASSWORD" | docker login -u "DOCKER_ID" --password-stdin
+  - docker push kent/multi-client
+  - docker push kent/multi-nginx
+  - docker push kent/multi-server
+  - docker push kent/multi-worker

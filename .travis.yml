@@ -13,7 +13,7 @@ after_success:
   - docker run build -t kent/multi-nginx ./nginx
   - docker run build -t kent/multi-server ./server
   - docker run build -t kent/multi-worker ./worker
-  - echo "DOCKER_PASSWORD" | docker login -u "DOCKER_ID" --password-stdin
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
   - docker push kent/multi-client
   - docker push kent/multi-nginx
   - docker push kent/multi-server
